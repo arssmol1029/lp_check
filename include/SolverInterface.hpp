@@ -12,5 +12,5 @@ struct LpSolution {
 class SolverInterface {
 public:
     virtual ~SolverInterface() = default;
-    virtual std::optional<LpSolution> solve(const std::string &lpFilePath) = 0;
+    virtual std::optional<LpSolution> get_solution(const std::string &lpFilePath) = 0;
 };

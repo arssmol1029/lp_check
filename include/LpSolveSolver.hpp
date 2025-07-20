@@ -2,6 +2,6 @@
 
 class LpSolveSolver : public SolverInterface {
 public:
-    std::optional<LpSolution> solve(const std::string &lpFilePath);
+    std::optional<LpSolution> get_solution(const std::string &lpFilePath);
     virtual ~LpSolveSolver();
 };
