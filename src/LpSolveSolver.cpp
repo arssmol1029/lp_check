@@ -10,7 +10,7 @@ std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& lpFileP
     
     std::string mutableStr = lpFilePath;
     char * lpFile = mutableStr.data(); // почему-то функции принимают char*, а не const char*
-    lprec* lp = read_LP(lpFile, IMPORTANT, "problem");
+    lprec* lp = read_LP(lpFile, IMPORTANT, nullptr);
     if (!lp) {
         return std::nullopt;
     }
