@@ -3,6 +3,7 @@ project(LPBenchmark)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(LPSOLVE_ROOT_DIR "/path/to/lp_solve" CACHE PATH "Root directory of lp_solve installation")
 set(HIGHS_ROOT_DIR "/path/to/highs" CACHE PATH "Root directory of HiGHS installation")
 set(SCIP_ROOT_DIR "/path/to/scip" CACHE PATH "Root directory of SCIP installation")
@@ -25,8 +26,12 @@ find_path(LPSOLVE_INCLUDE_DIRcd
     PATH_SUFFIXES lp_solve lpsolve
 ) 
 
-if (NOT LPSOLVE_LIBRARY OR NOT LPSOLVE_INCLUDE_DIR)
+if (NOT LPSOLVE_LIBRARY)
     message(FATAL_ERROR "библиотека lp_solve не найдена")
+endif()
+
+if (NOT LPSOLVE_INCLUDE_DIR)
+    message(FATAL_ERROR "заголовочный файл lp_solve не найден")
 endif()
 
 
@@ -47,8 +52,12 @@ find_path(SCIP_INCLUDE_DIR
     PATH_SUFFIXES scip
 )
 
-if (NOT SCIP_LIBRARY OR NOT SCIP_INCLUDE_DIR)
+if (NOT SCIP_LIBRARY)
     message(FATAL_ERROR "библиотека SCIP не найдена")
+endif()
+
+if (NOT SCIP_INCLUDE_DIR)
+    message(FATAL_ERROR "заголовочный файл SCIP не найден")
 endif()
 
 
