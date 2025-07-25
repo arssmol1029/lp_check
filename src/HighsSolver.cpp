@@ -9,6 +9,7 @@ std::optional<LpSolution> HighsSolver::get_solution(const std::string& lpFilePat
     
     Highs highs;
     highs.setOptionValue("output_flag", false);
+    highs.setOptionValue("time_limit", 30.0);
     
     HighsStatus status = highs.readModel(lpFilePath);
     if (status != HighsStatus::kOk) {

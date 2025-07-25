@@ -23,6 +23,7 @@ std::optional<LpSolution> ScipSolver::get_solution(const std::string& lpFilePath
     }
 
     SCIPsetIntParam(scip, "display/verblevel", 0);
+    SCIPsetRealParam(scip, "limits/time", 30);
 
     retcode = SCIPreadProb(scip, lpFilePath.c_str(), nullptr);
     if(retcode != SCIP_OKAY) {

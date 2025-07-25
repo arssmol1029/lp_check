@@ -29,6 +29,8 @@ std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& filePat
         return std::nullopt;
     }
 
+    set_timeout(lp, 30);
+
     int ret = solve(lp);
     if (ret != OPTIMAL) {
         delete_lp(lp);
