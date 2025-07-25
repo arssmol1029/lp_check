@@ -5,6 +5,9 @@
 
 
 
+const int TIME_LIMIT = 30;
+
+
 std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& filePath) {
     bool isMps = filePath.size() > 4 && 
                 filePath.substr(filePath.size() - 4) == ".mps";
@@ -29,11 +32,14 @@ std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& filePat
         return std::nullopt;
     }
 
-    set_timeout(lp, 30);
+    set_timeout(lp, TIME_LIMIT);
 
     int ret = solve(lp);
     if (ret != OPTIMAL) {
         delete_lp(lp);
+        if (ret == TIMEOUT) {
+            std::cout << "Превышен лимит по времени (" << TIME_LIMIT << " секунд)" << std::endl;
+        }
         return std::nullopt;
     }
 

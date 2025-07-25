@@ -5,6 +5,9 @@
 
 
 
+const int TIME_LIMIT = 30;
+
+
 std::optional<LpSolution> ScipSolver::get_solution(const std::string& lpFilePath) {
     auto start = std::chrono::high_resolution_clock::now();
     
@@ -23,7 +26,7 @@ std::optional<LpSolution> ScipSolver::get_solution(const std::string& lpFilePath
     }
 
     SCIPsetIntParam(scip, "display/verblevel", 0);
-    SCIPsetRealParam(scip, "limits/time", 30);
+    SCIPsetRealParam(scip, "limits/time", TIME_LIMIT);
 
     retcode = SCIPreadProb(scip, lpFilePath.c_str(), nullptr);
     if(retcode != SCIP_OKAY) {
@@ -39,6 +42,9 @@ std::optional<LpSolution> ScipSolver::get_solution(const std::string& lpFilePath
 
     SCIP_STATUS status = SCIPgetStatus(scip);
     if (status != SCIP_STATUS_OPTIMAL) {
+        if (status == SCIP_STATUS_TIMELIMIT) {
+            std::cout << "Превышен лимит по времени (" << TIME_LIMIT << " секунд)" << std::endl;
+        }
         SCIPfree(&scip);
         return std::nullopt;
     }

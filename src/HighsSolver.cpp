@@ -4,12 +4,15 @@
 
 
 
+const int TIME_LIMIT = 30;
+
+
 std::optional<LpSolution> HighsSolver::get_solution(const std::string& lpFilePath) {
     auto start = std::chrono::high_resolution_clock::now();
     
     Highs highs;
     highs.setOptionValue("output_flag", false);
-    highs.setOptionValue("time_limit", 30.0);
+    highs.setOptionValue("time_limit", TIME_LIMIT);
     
     HighsStatus status = highs.readModel(lpFilePath);
     if (status != HighsStatus::kOk) {
@@ -23,6 +26,9 @@ std::optional<LpSolution> HighsSolver::get_solution(const std::string& lpFilePat
 
     const HighsModelStatus& model_status = highs.getModelStatus();
     if (model_status != HighsModelStatus::kOptimal) {
+        if (model_status == HighsModelStatus::kTimeLimit) {
+            std::cout << "Превышен лимит по времени (" << TIME_LIMIT << " секунд)" << std::endl;
+        }
         return std::nullopt;
     }
 
