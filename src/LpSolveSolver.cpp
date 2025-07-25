@@ -38,3 +38,6 @@ std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& lpFileP
 
     return result;
 }
+
+
+LpSolveSolver::~LpSolveSolver() = default; 

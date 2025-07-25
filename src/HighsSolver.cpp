@@ -36,3 +36,5 @@ std::optional<LpSolution> HighsSolver::get_solution(const std::string& lpFilePat
 
     return result;
 }
+
+HighsSolver::~HighsSolver() = default; 

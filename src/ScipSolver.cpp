@@ -64,3 +64,5 @@ std::optional<LpSolution> ScipSolver::get_solution(const std::string& lpFilePath
 
     return result;
 }
+
+ScipSolver::~ScipSolver() = default; 
