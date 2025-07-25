@@ -8,6 +8,8 @@ set(LPSOLVE_ROOT_DIR "/path/to/lp_solve" CACHE PATH "Root directory of lp_solve 
 set(HIGHS_ROOT_DIR "/path/to/highs" CACHE PATH "Root directory of HiGHS installation")
 set(SCIP_ROOT_DIR "/path/to/scip" CACHE PATH "Root directory of SCIP installation")
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/ 
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests)
 
 find_library(LPSOLVE_LIBRARY
     NAMES lpsolve55
@@ -18,7 +20,7 @@ find_library(LPSOLVE_LIBRARY
     PATH_SUFFIXES lp_solve lpsolve
 )
 
-find_path(LPSOLVE_INCLUDE_DIRcd 
+find_path(LPSOLVE_INCLUDE_DIR 
     NAMES lp_lib.h
     PATHS ${LPSOLVE_ROOT_DIR}/include
         usr/include
@@ -101,4 +103,11 @@ target_link_libraries(lp_benchmark
     ${LPSOLVE_LIBRARY}
     ${SCIP_LIBRARY}
     ${HIGHS_LIBRARY}
+)
+
+target_include_directories(lp_benchmark
+    PRIVATE
+    /usr/include
+    /usr/local/include
+    /usr/local/include/highs
 )
