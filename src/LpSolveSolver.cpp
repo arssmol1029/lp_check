@@ -5,22 +5,35 @@
 
 
 
-std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& lpFilePath) {
-    auto start = std::chrono::high_resolution_clock::now();
+std::optional<LpSolution> LpSolveSolver::get_solution(const std::string& filePath) {
+    bool isMps = filePath.size() > 4 && 
+                filePath.substr(filePath.size() - 4) == ".mps";
+    bool isLp = filePath.size() > 3 && 
+                filePath.substr(filePath.size() - 3) == ".lp";
     
-    std::string mutableStr = lpFilePath;
-    char * lpFile = mutableStr.data(); // почему-то функции принимают char*, а не const char*
-    lprec* lp = read_LP(lpFile, IMPORTANT, nullptr);
+    if (!isMps && !isLp) {
+        std::cerr << "Формат файла не поддерживается" << filePath << std::endl;
+        return std::nullopt;
+    }
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    lprec* lp = nullptr;
+    if (isMps) {
+        lp = read_MPS(const_cast<char*>(filePath.c_str()), IMPORTANT); // почему-то функции принимают char*, а не const char*
+    } else {
+        lp = read_LP(const_cast<char*>(filePath.c_str()), IMPORTANT, nullptr);
+    }
+
     if (!lp) {
         return std::nullopt;
     }
- 
+
     int ret = solve(lp);
     if (ret != OPTIMAL) {
         delete_lp(lp);
         return std::nullopt;
     }
-
 
     double objVal = get_objective(lp);
     int numVars = get_Ncolumns(lp);
