@@ -29,6 +29,17 @@ cd lp_check
 ```bash
 mkdir build && cd build
 cmake ..
+```
+
+Если решатели установлены не по стандартным путям, при сборке необходимо указать пути до них
+```bash
+cmake -DLPSOLVE_ROOT_DIR=/path/to/lp_solve \
+      -DHIGHS_ROOT_DIR=/path/to/scip \
+      -DSCIP_ROOT_DIR=/path/to/highs \
+      ..
+```
+
+```bash
 cmake --build .
 ./lp_benchmark
 ```
